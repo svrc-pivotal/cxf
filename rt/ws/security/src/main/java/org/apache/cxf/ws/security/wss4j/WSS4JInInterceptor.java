@@ -531,6 +531,8 @@ public class WSS4JInInterceptor extends AbstractWSS4JInterceptor {
         resultPriorities.add(WSConstants.UT_NOPASSWORD);
         
         Map<Integer, List<WSSecurityEngineResult>> actionResults = wsResult.getActionResults();
+
+    outer:
         for (Integer resultPriority : resultPriorities) {
             if (resultPriority == WSConstants.ST_UNSIGNED && !allowUnsignedSamlPrincipals) {
                 continue;
@@ -553,7 +555,7 @@ public class WSS4JInInterceptor extends AbstractWSS4JInterceptor {
                         createSecurityContext(msg, useJAASSubject, result, utWithCallbacks);
                     if (context != null) {
                         msg.put(SecurityContext.class, context);
-                        break;
+                        break outer;
                     }
                 }
             }
